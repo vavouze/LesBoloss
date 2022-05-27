@@ -13,9 +13,9 @@ public class ScreenBehavior : MonoBehaviour
     // Start is called before the first frame update
 
     public GameObject UserContact;
+    public GameObject Conversation; 
     private GameObject contactCanvas;
-    private int canvasUserHeigth = 295;
-    private int nbConv = 0;
+    private GameObject convCanvas;
     
     private string[] users = new string[] {"Jessica" , "Connasse" , "Abdel"};
 
@@ -39,21 +39,41 @@ public class ScreenBehavior : MonoBehaviour
     public void addConversation(string user)
     {
         contactCanvas = GameObject.Find("contacts");
-        RectTransform canvasRect = contactCanvas.GetComponent<RectTransform> ();
+        convCanvas = GameObject.Find("conv");
+        string uniqId = generateID();
+        
         GameObject newUser = (GameObject)Instantiate(UserContact);
-        newUser.transform.Find("panel").Find("Button").Find("UserName").GetComponent<UnityEngine.UI.Text>().text = user;
+        GameObject conv = (GameObject)Instantiate(Conversation);
+        
+        newUser.transform.Find("Button").Find("UserName").GetComponent<UnityEngine.UI.Text>().text = user;
         newUser.transform.SetParent(contactCanvas.transform,false);
-        newUser.transform.localPosition  = new Vector3(0, (canvasRect.rect.height / 2) -(nbConv * canvasUserHeigth / 2) - 75, 0); 
+        newUser.name = "user_" + uniqId;
         
-        var button = newUser.transform.Find("panel").Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(openConv);
+        conv.transform.SetParent(convCanvas.transform,false);
+        conv.name = "conv_" + uniqId;
+        conv.SetActive(false);
+
         
-        nbConv += 1;
+        var button = newUser.transform.Find("Button").GetComponent<Button>();
+        button.onClick.AddListener(delegate { openConv(uniqId); });
     }
 
-    public void openConv()
+    public void openConv(string id)
     {
-        Debug.Log("aze");
+        foreach(Transform child in convCanvas.transform)
+        {
+            if (child.name == "conv_" + id) 
+            {
+                child.gameObject.SetActive(true);
+            }else {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+    
+    public string generateID()
+    {
+        return Guid.NewGuid().ToString("N");
     }
 
 }
