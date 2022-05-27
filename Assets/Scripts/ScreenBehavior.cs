@@ -46,12 +46,14 @@ public class ScreenBehavior : MonoBehaviour
         GameObject conv = (GameObject)Instantiate(Conversation);
         
         newUser.transform.Find("Button").Find("UserName").GetComponent<UnityEngine.UI.Text>().text = user;
-        newUser.transform.SetParent(contactCanvas.transform,false);
         newUser.name = "user_" + uniqId;
-        
-        conv.transform.SetParent(convCanvas.transform,false);
+        newUser.transform.SetParent(contactCanvas.transform,false);
+
         conv.name = "conv_" + uniqId;
+        conv.transform.Find("Scroll").Find("ConvName").GetComponent<UnityEngine.UI.Text>().text = user;
         conv.SetActive(false);
+        conv.transform.SetParent(convCanvas.transform,false);
+
 
         
         var button = newUser.transform.Find("Button").GetComponent<Button>();
