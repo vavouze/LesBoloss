@@ -32,8 +32,8 @@ public class ScreenBehavior : MonoBehaviour
     IEnumerator WaitAnimation()
     {
 
-        yield return new WaitForSeconds(17); 
-        // yield return new WaitForSeconds(0); 
+        // yield return new WaitForSeconds(17); 
+        yield return new WaitForSeconds(0); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
@@ -60,58 +60,73 @@ public class ScreenBehavior : MonoBehaviour
         newUser.transform.Find("Button").Find("UserName").GetComponent<UnityEngine.UI.Text>().text = user;
         newUser.name = "user_" + uniqId;
         newUser.transform.SetParent(contactCanvas.transform,false);
+        triggerNotifs(newUser);
 
         conv.name = "conv_" + uniqId;
         conv.transform.Find("Scroll").Find("ConvName").GetComponent<UnityEngine.UI.Text>().text = user;
         conv.SetActive(false);
         conv.transform.SetParent(convCanvas.transform,false);
+        
+        
 
 
         
         var button = newUser.transform.Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(delegate { openConv(uniqId); });
+        button.onClick.AddListener(delegate { openConv(uniqId,newUser); });
     }
 
-    public void openConv(string id)
+    public void openConv(string id,GameObject user)
     {
+        //remove notifs
+        removeNotifs(user);
         foreach(Transform child in convCanvas.transform)
         {
             if (child.name == "conv_" + id) 
             {
                 child.gameObject.SetActive(true);
                 activeConv = child;
-                addBotMessage("simply dummy text of the printing and typesetting industry.\r\n" +
-                              "Lorem Ipsum has been the industry's standard dummy");
-                addMessage("There are many variations of passages of Lorem Ipsum available, \r\n" +
-                           "but the majority have suffered alteration in some form, by injected humour");
+                addBotMessage(activeConv,"simply dummy text of the printing and typesetting industry.\r\n" +
+                                         "Lorem Ipsum has been the industry's standard dummy");
+                addMessage(activeConv,"There are many variations of passages of Lorem Ipsum available, \r\n" +
+                                      "but the majority have suffered alteration in some form, by injected humour");
             }else {
                 child.gameObject.SetActive(false);
             }
         }
     }
+
+    public void removeNotifs(GameObject user)
+    {
+        user.transform.Find("Button").Find("Notifs").gameObject.SetActive(false);
+    }
     
+    public void triggerNotifs(GameObject user)
+    {
+        user.transform.Find("Button").Find("Notifs").gameObject.SetActive(true);
+    }
+
     public string generateID()
     {
         return Guid.NewGuid().ToString("N");
     }
 
-    public void addBotMessage(string message)
+    public void addBotMessage(Transform conv,string message)
     {
-        if (activeConv != null)
+        if (conv != null)
         {
             GameObject botMessage = (GameObject)Instantiate(BotMessage);
             botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
-            botMessage.transform.SetParent(activeConv.Find("Scroll").Find("panel"),false);
+            botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
         }
     }
     
-    public void addMessage(string message)
+    public void addMessage(Transform conv,string message)
     {
-        if (activeConv != null)
+        if (conv != null)
         {
             GameObject Message = (GameObject)Instantiate(MeMessage);
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
-            Message.transform.SetParent(activeConv.Find("Scroll").Find("panel"),false);
+            Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
         }
     }
 
