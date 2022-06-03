@@ -20,6 +20,9 @@ public class ScreenBehavior : MonoBehaviour
     private GameObject convCanvas;
     private Transform activeConv = null;
     
+    public AudioClip notifSound;
+    public AudioClip messageSound;
+    
     private string[] users = new string[] {"Jessica" , "Connasse" , "Abdel"};
 
 
@@ -103,6 +106,7 @@ public class ScreenBehavior : MonoBehaviour
     public void triggerNotifs(GameObject user)
     {
         user.transform.Find("Button").Find("Notifs").gameObject.SetActive(true);
+        PlaySound(notifSound,0.08f);
     }
 
     public string generateID()
@@ -124,10 +128,16 @@ public class ScreenBehavior : MonoBehaviour
     {
         if (conv != null)
         {
+            PlaySound(messageSound,0.5f);
             GameObject Message = (GameObject)Instantiate(MeMessage);
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
         }
+    }
+    
+    public void PlaySound(AudioClip soundClip, float volume = 1.0f)
+    {
+        GameObject.Find("screen").GetComponent<AudioSource>().PlayOneShot(soundClip, volume);
     }
 
 }
