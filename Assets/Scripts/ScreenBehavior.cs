@@ -34,15 +34,37 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator WaitAnimation()
     {
-
-        // yield return new WaitForSeconds(17); 
-        yield return new WaitForSeconds(0); 
+        yield return new WaitForSeconds(17); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
         {
             addConversation(user);
         }
+    }
+
+    IEnumerator annonce(string annonce)
+    {
+        GameObject.Find("annonce").SetActive(true);
+        GameObject.Find("annoncetext").GetComponent<UnityEngine.UI.Text>().text = annonce;
+        float timePassed = 0;
+        while (timePassed < 5)
+        {
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+        StartCoroutine(FadeTo(0.0f, 1.0f));
+    }
+    
+    IEnumerator FadeTo(float aValue, float aTime) 
+    {
+        var image = GameObject.Find("annonce").GetComponent<Image>();
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - (aTime * Time.deltaTime));
+            yield return null;
+        }
+        GameObject.Find("annonce").SetActive(false);
     }
 
     // Update is called once per frame
@@ -69,10 +91,6 @@ public class ScreenBehavior : MonoBehaviour
         conv.transform.Find("Scroll").Find("ConvName").GetComponent<UnityEngine.UI.Text>().text = user;
         conv.SetActive(false);
         conv.transform.SetParent(convCanvas.transform,false);
-        
-        
-
-
         
         var button = newUser.transform.Find("Button").GetComponent<Button>();
         button.onClick.AddListener(delegate { openConv(uniqId,newUser); });
@@ -119,11 +137,13 @@ public class ScreenBehavior : MonoBehaviour
         if (conv != null)
         {
             GameObject botMessage = (GameObject)Instantiate(BotMessage);
-            botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
+            botMessage.transform.GetComponent<RectTransform>();
+            botMessage.transform.Find("Button").Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
+            botMessage.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { respondToMessage(botMessage.transform); });
         }
     }
-    
+
     public void addMessage(Transform conv,string message)
     {
         if (conv != null)
@@ -132,6 +152,24 @@ public class ScreenBehavior : MonoBehaviour
             GameObject Message = (GameObject)Instantiate(MeMessage);
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
+        }
+    }
+    
+    public void respondToMessage(Transform message)
+    {
+        
+        GameObject reply = message.Find("reply").gameObject;
+        if (reply.activeSelf)
+        {
+            reply.SetActive(false); 
+        }
+        else
+        {
+            if (GameObject.Find("reply") != null)
+            {
+                GameObject.Find("reply").SetActive(false);
+            }
+            reply.SetActive(true);
         }
     }
     
