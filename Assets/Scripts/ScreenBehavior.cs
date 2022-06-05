@@ -38,7 +38,7 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator WaitAnimation()
     {
-        yield return new WaitForSeconds(0); 
+        yield return new WaitForSeconds(17); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
@@ -197,6 +197,12 @@ public class ScreenBehavior : MonoBehaviour
     public void PlaySound(AudioClip soundClip, float volume = 1.0f)
     {
         GameObject.Find("screen").GetComponent<AudioSource>().PlayOneShot(soundClip, volume);
+    }
+    
+    // need to add all scenes to the build in order to call this function
+    public void loadEndingScene(string scenename)
+    {
+        SceneManager.LoadScene(scenename);
     }
 
 }
