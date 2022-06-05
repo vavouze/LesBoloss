@@ -16,6 +16,8 @@ public class ScreenBehavior : MonoBehaviour
     public GameObject Conversation; 
     public GameObject BotMessage; 
     public GameObject MeMessage; 
+    public GameObject annonceCanvas;
+
     private GameObject contactCanvas;
     private GameObject convCanvas;
     private Transform activeConv = null;
@@ -45,7 +47,7 @@ public class ScreenBehavior : MonoBehaviour
 
     IEnumerator annonce(string annonce)
     {
-        GameObject.Find("annonce").SetActive(true);
+        annonceCanvas.SetActive(true);
         GameObject.Find("annoncetext").GetComponent<UnityEngine.UI.Text>().text = annonce;
         float timePassed = 0;
         while (timePassed < 5)
