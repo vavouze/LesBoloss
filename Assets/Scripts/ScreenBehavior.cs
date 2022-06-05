@@ -25,6 +25,8 @@ public class ScreenBehavior : MonoBehaviour
     public AudioClip notifSound;
     public AudioClip messageSound;
     
+    private GameObject[] messages;
+    
     private string[] users = new string[] {"Jessica" , "Connasse" , "Abdel"};
 
 
@@ -36,7 +38,7 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator WaitAnimation()
     {
-        yield return new WaitForSeconds(17); 
+        yield return new WaitForSeconds(0); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
@@ -48,6 +50,8 @@ public class ScreenBehavior : MonoBehaviour
     IEnumerator annonce(string annonce)
     {
         annonceCanvas.SetActive(true);
+        var image = GameObject.Find("annonce").GetComponent<Image>();
+        image.color = new Color(image.color.r, image.color.g, image.color.b, 1);    
         GameObject.Find("annoncetext").GetComponent<UnityEngine.UI.Text>().text = annonce;
         float timePassed = 0;
         while (timePassed < 5)
@@ -55,6 +59,8 @@ public class ScreenBehavior : MonoBehaviour
             timePassed += Time.deltaTime;
             yield return null;
         }
+
+        clearAllConvMsg();
         StartCoroutine(FadeTo(0.0f, 1.0f));
     }
     
@@ -96,6 +102,19 @@ public class ScreenBehavior : MonoBehaviour
         
         var button = newUser.transform.Find("Button").GetComponent<Button>();
         button.onClick.AddListener(delegate { openConv(uniqId,newUser); });
+    }
+
+    public void clearAllConvMsg()
+    {
+        foreach (Transform child in GameObject.Find("conv").transform)
+        {
+            foreach(Transform msg in child.Find("Scroll").Find("panel").transform)
+            {
+                Destroy(msg.gameObject);
+            } 
+        }
+
+        
     }
 
     public void openConv(string id,GameObject user)
