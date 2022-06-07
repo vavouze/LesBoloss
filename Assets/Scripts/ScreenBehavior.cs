@@ -38,7 +38,7 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator WaitAnimation()
     {
-        yield return new WaitForSeconds(17); 
+        yield return new WaitForSeconds(0); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
@@ -129,8 +129,8 @@ public class ScreenBehavior : MonoBehaviour
                 activeConv = child;
                 addBotMessage(activeConv,"simply dummy text of the printing and typesetting industry.\r\n" +
                                          "Lorem Ipsum has been the industry's standard dummy");
-                addMessage(activeConv,"There are many variations of passages of Lorem Ipsum available, \r\n" +
-                                      "but the majority have suffered alteration in some form, by injected humour");
+                addMessage(activeConv,"simply dummy text of the printing and typesetting industry.\r\n" +
+                                      "Lorem Ipsum has been the industry's standard dummy");
             }else {
                 child.gameObject.SetActive(false);
             }
@@ -158,10 +158,10 @@ public class ScreenBehavior : MonoBehaviour
         if (conv != null)
         {
             GameObject botMessage = (GameObject)Instantiate(BotMessage);
-            botMessage.transform.GetComponent<RectTransform>();
-            botMessage.transform.Find("Button").Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
-            botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
-            botMessage.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { respondToMessage(botMessage.transform); });
+            botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
+            botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false); 
+            LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
+            // botMessage.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { respondToMessage(botMessage.transform); });
         }
     }
 
@@ -173,6 +173,7 @@ public class ScreenBehavior : MonoBehaviour
             GameObject Message = (GameObject)Instantiate(MeMessage);
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
         }
     }
     
