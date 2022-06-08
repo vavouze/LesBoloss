@@ -80,7 +80,7 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator WaitAnimation()
     {
-        yield return new WaitForSeconds(0); 
+        yield return new WaitForSeconds(17); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
