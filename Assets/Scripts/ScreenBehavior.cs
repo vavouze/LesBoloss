@@ -14,6 +14,8 @@ public class ScreenBehavior : MonoBehaviour
     public GameObject UserContact;
     public GameObject Conversation; 
     public GameObject BotMessage; 
+    public Texture Marina; 
+    public Texture Maeva; 
     public GameObject MeMessage; 
     public GameObject annonceCanvas;
     public GameObject Choices;
@@ -28,7 +30,7 @@ public class ScreenBehavior : MonoBehaviour
     public AudioClip notifSound;
     public AudioClip messageSound;
     private GameObject[] messages;
-    private string[] users = new string[] {"Jessica" , "Connasse" , "Abdel"};
+    private string[] users = new string[] {"Marina" , "Maeva"};
     private float actualScrollSize = 0;
     private float actualChoiceScrollSize = 0;
 
@@ -131,17 +133,23 @@ public class ScreenBehavior : MonoBehaviour
         GameObject conv = (GameObject)Instantiate(Conversation);
         
         newUser.transform.Find("Button").Find("UserName").GetComponent<UnityEngine.UI.Text>().text = user;
-        newUser.name = "user_" + uniqId;
+        if (user == "Marina")
+        {
+            newUser.transform.Find("Button").Find("userPicture").GetComponent<RawImage>().texture  = Marina;
+        }
+        else
+        {
+            newUser.transform.Find("Button").Find("userPicture").GetComponent<RawImage>().texture  = Maeva;
+        }
+        newUser.name = "user_" + user;
         newUser.transform.SetParent(contactCanvas.transform,false);
-        triggerNotifs(newUser);
-
-        conv.name = "conv_" + uniqId;
+        conv.name = "conv_" + user;
         conv.transform.Find("Scroll").Find("ConvName").GetComponent<UnityEngine.UI.Text>().text = user;
         conv.SetActive(false);
         conv.transform.SetParent(convCanvas.transform,false);
         
         var button = newUser.transform.Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(delegate { openConv(uniqId,newUser); });
+        button.onClick.AddListener(delegate { openConv(user,newUser); });
     }
 
     public void clearAllConvMsg()
@@ -178,15 +186,14 @@ public class ScreenBehavior : MonoBehaviour
                     LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                     RectTransform transformButtons = (RectTransform)choice.transform;
                     actualChoiceScrollSize += transformButtons.rect.height;
-                    Debug.Log(actualChoiceScrollSize);
-
-                    if (actualChoiceScrollSize >= 280 / 2)
+                    if (actualChoiceScrollSize >= 300 / 2)
                     {
                         panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, panelButtons.rect.height + transformButtons.rect.height);
                     }
                     LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                 }
             }
+            conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
         }
 
     }
@@ -282,6 +289,10 @@ public class ScreenBehavior : MonoBehaviour
                 scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformBotMessage.rect.height);
             }
             historyController(conv);
+            if (conv.gameObject.activeSelf == false)
+            {
+                triggerNotifs(GameObject.Find(conv.name.Replace("conv", "user")));
+            }
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
         }
     }

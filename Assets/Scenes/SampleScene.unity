@@ -1096,8 +1096,11 @@ MonoBehaviour:
   UserContact: {fileID: 3559536972595148206, guid: a51eb55add430704daa19d79d977a094, type: 3}
   Conversation: {fileID: 53502123914547213, guid: ce1ebede74cec1c4a997d605f5876b8b, type: 3}
   BotMessage: {fileID: 7349466242833340222, guid: 3350f210354ee9d499360b193e755e8a, type: 3}
+  Marina: {fileID: 2800000, guid: 83ba946cd9988d148a9f45847439fb0e, type: 3}
+  Maeva: {fileID: 2800000, guid: 796128ca454a63d45918c9253f2f3ade, type: 3}
   MeMessage: {fileID: 237663315502945854, guid: 0c1b540547e1e6a49b55f063dd24a0ae, type: 3}
   annonceCanvas: {fileID: 128563174}
+  Choices: {fileID: 2643440029751124365, guid: f6c50cfad00ef424e89e6ad947dfba2d, type: 3}
   notifSound: {fileID: 8300000, guid: eb2433e854064df40b663dacbddfcb94, type: 3}
   messageSound: {fileID: 8300000, guid: f7cfe7145d4409e4a93c83457731f4d6, type: 3}
 --- !u!82 &1026787042
