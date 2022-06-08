@@ -21,6 +21,7 @@ public class ScreenBehavior : MonoBehaviour
     private GameObject convCanvas;
     private Transform activeConv = null;
     private string index = "Start";
+    private bool init = false;
     private Boolean isLastMessageBot = true;
     Dictionary<string, string[]> arbre2Decision = new Dictionary<string, string[]>();
     Dictionary<string, string[]> phraseBot = new Dictionary<string, string[]>();
@@ -29,15 +30,16 @@ public class ScreenBehavior : MonoBehaviour
     private GameObject[] messages;
     private string[] users = new string[] {"Jessica" , "Connasse" , "Abdel"};
     private float actualScrollSize = 0;
+    private float actualChoiceScrollSize = 0;
 
 
 
     void Start()
     {
         StartCoroutine(WaitAnimation());
-        arbre2Decision.Add("Oui �a va ^^ et toi �a va ?", new string[] { "Start", "Marina-01-01" });
+        arbre2Decision.Add("Oui ça va ^^ et toi ça va ?", new string[] { "Start", "Marina-01-01" });
         arbre2Decision.Add("Salut, pas grand chose toi aussi tu habites sur Rouen ?", new string[] { "Start", "Marina-01-02" });
-        arbre2Decision.Add("Oui, je suis en �cole de design et toi tu fais quoi ?", new string[] { "Start", "Marina-01-03" });
+        arbre2Decision.Add("Oui, je suis en école de design et toi tu fais quoi ?", new string[] { "Start", "Marina-01-03" });
 
         arbre2Decision.Add("Ca va, toi aussi tu habites sur Rouen ?", new string[] { "Marina-01-01", "Marina-01-02" });
 
@@ -51,32 +53,32 @@ public class ScreenBehavior : MonoBehaviour
 
         arbre2Decision.Add("N/A-Marina-02-02", new string[] { "Marina-02-02", "Maeva-01-01" });
 
-        arbre2Decision.Add("Tu avais pas dit que tu avais arr�t� ?", new string[] { "Marina-02-03", "Maeva-01-01" });
+        arbre2Decision.Add("Tu avais pas dit que tu avais arrêté ?", new string[] { "Marina-02-03", "Maeva-01-01" });
         arbre2Decision.Add("N/A-Marina-02-03", new string[] { "Marina-02-03", "Marina-03-01" });
 
-        arbre2Decision.Add("Ah ouais � ce point l�, �a t'as beaucoup marqu�. J'esp�re que tu trouveras quelque-chose qui te pla�ra plus...", new string[] { "Marina-02-04", "Marina-03-02" });
-        arbre2Decision.Add("Mais attends... du coup tu �tait dans l'universit� de ta m�re ?", new string[] { "Marina-02-04", "Marina-03-03" });
+        arbre2Decision.Add("Ah ouais à ce point là, ça t'as beaucoup marqué. J'espère que tu trouveras quelque-chose qui te plaîra plus...", new string[] { "Marina-02-04", "Marina-03-02" });
+        arbre2Decision.Add("Mais attends... du coup tu était dans l'université de ta mère ?", new string[] { "Marina-02-04", "Marina-03-03" });
 
         arbre2Decision.Add("N/A-Marina-03-01", new string[] { "Marina-03-01", "Maeva-01-01" });
         arbre2Decision.Add("N/A-Marina-03-02", new string[] { "Marina-03-02", "Maeva-01-01" });
         arbre2Decision.Add("N/A-Marina-03-03", new string[] { "Marina-03-03", "Maeva-01-01" });
-        phraseBot.Add("Start", new string[] { "Salut �a va ?\nTu fais quoi dans la vie ?" });
-        phraseBot.Add("Marina-01-01", new string[] { "Ouais ouais ^^\nCa peut aller, et toi �a va ?" });
-        phraseBot.Add("Marina-01-03", new string[] { "Ah oui je vois tr�s bien o� est ton �cole.\nMoi j'ai arr�t� les cours l'ann�e derni�re." });
-        phraseBot.Add("Marina-01-02", new string[] { "Haha oui mais je compte pas vivre ici toute ma vie.\nJe compte bient�t aller � Dreux" });
-        phraseBot.Add("Marina-02-01", new string[] { "Et arr�te si �a se trouve c'est tr�s bien Dreux.\nApr�s c'est vrai que j'ai arr�t� les cours depuis 1 an." });
+        phraseBot.Add("Start", new string[] { "Salut ça va ?\nTu fais quoi dans la vie ?" });
+        phraseBot.Add("Marina-01-01", new string[] { "Ouais ouais ^^\nCa peut aller, et toi ça va ?" });
+        phraseBot.Add("Marina-01-03", new string[] { "Ah oui je vois très bien où est ton école.\nMoi j'ai arrêté les cours l'année dernière." });
+        phraseBot.Add("Marina-01-02", new string[] { "Haha oui mais je compte pas vivre ici toute ma vie.\nJe compte bientôt aller à Dreux" });
+        phraseBot.Add("Marina-02-01", new string[] { "Et arrête si ça se trouve c'est très bien Dreux.\nAprès c'est vrai que j'ai arrêté les cours depuis 1 an." });
         phraseBot.Add("Marina-02-02", new string[] { "Donc tu es forcement quelqu'un de bien !\n" });//, "Et tu fais quoi dans la vie ?\n", "Je faisais de la psycho jusqu'y il a un an avec ma m�re" });
-        phraseBot.Add("Marina-02-03", new string[] { "Des cours de psychologies � domicile, pour mieux m'int�grer avec les gens et mieux les comprendre haha :)\nJe faisais �a avec ma m�re, elle est prof � l'universit�.\nJ'en ai un peu marre.\nMais je n'ai pas encore trouv� ce que je voulais faire de ma vie.\nEnfin bref on est pas l� pour parler pour moi." });
-        phraseBot.Add("Marina-02-04", new string[] { "Actuellement oui, apr�s avec ma m�re on a beaucoup d�m�nag�s.\nOn habite du c�t� de la place de la Rougemare.\n", "Ouais elle fait un taff qui l'oblige � se d�placer ?", "Elle fait de la recherche sur le cerveau des gens !", "Quoi ?", "Non je rigole, elle �tudie les interactions sociales des personnes et les personnes atteintes de troubles/d�sordres mentaux.", "Ca a l'air super interessant pourquoi tu as d�cid� d'arr�ter ?" });
-        phraseBot.Add("Marina-03-01", new string[] { "C'est compliqu� mais oui on a arr�t�s les cours..." });
+        phraseBot.Add("Marina-02-03", new string[] { "Des cours de psychologies à domicile, pour mieux m'intégrer avec les gens et mieux les comprendre haha :)\nJe faisais ça avec ma mère, elle est prof à l'université.\nJ'en ai un peu marre.\nMais je n'ai pas encore trouvé ce que je voulais faire de ma vie.\nEnfin bref on est pas là pour parler pour moi." });
+        phraseBot.Add("Marina-02-04", new string[] { "Actuellement oui, après avec ma mère on a beaucoup déménagés.\nOn habite du côté de la place de la Rougemare.\n", "Ouais elle fait un taff qui l'oblige à se déplacer ?", "Elle fait de la recherche sur le cerveau des gens !", "Quoi ?", "Non je rigole, elle étudie les interactions sociales des personnes et les personnes atteintes de troubles/désordres mentaux.", "Ca a l'air super interessant pourquoi tu as décidé d'arrêter ?" });
+        phraseBot.Add("Marina-03-01", new string[] { "C'est compliqué mais oui on a arrêtés les cours..." });
         phraseBot.Add("Marina-03-02", new string[] { "" });
-        phraseBot.Add("Marina-03-03", new string[] { "Non non depuis le lyc�e elle est ma prof � domicile" });
+        phraseBot.Add("Marina-03-03", new string[] { "Non non depuis le lycée elle est ma prof à domicile" });
         phraseBot.Add("Maeva-01-01", new string[] { "Salut, tu es mon premier match de toute ma vie :p" });
     }
     
     IEnumerator WaitAnimation()
     {
-        yield return new WaitForSeconds(17); 
+        yield return new WaitForSeconds(0); 
         GameObject.Find("Cover").SetActive(false);
         GameObject.Find("VideoCanvas").SetActive(false);
         foreach (var user in users)
@@ -170,11 +172,19 @@ public class ScreenBehavior : MonoBehaviour
                 if (item.Value[0] == index)
                 {
                     choice = (GameObject)Instantiate(Choices);
-                    RectTransform transformButtons = (RectTransform)choice.transform;
                     choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = item.Key;
                     choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { changeIndexAndSendMessage(conv,item.Key,item.Value[1]) ; });
-                    panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, panelButtons.rect.height + transformButtons.rect.height * 2);
                     choice.transform.SetParent(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                    RectTransform transformButtons = (RectTransform)choice.transform;
+                    actualChoiceScrollSize += transformButtons.rect.height;
+                    Debug.Log(actualChoiceScrollSize);
+
+                    if (actualChoiceScrollSize >= 280 / 2)
+                    {
+                        panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, panelButtons.rect.height + transformButtons.rect.height);
+                    }
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                 }
             }
         }
@@ -196,11 +206,11 @@ public class ScreenBehavior : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
                 activeConv = child;
-                if (index == "Start") {
+                if (index == "Start" && init == false) {
                     addBotMessage(activeConv, "simply dummy text of the printing and typesetting industry.\r\n" +
                                              "Lorem Ipsum has been the industry's standard dummy");
+                    init = true;
                 }
-
             }else {
                 child.gameObject.SetActive(false);
             }
@@ -265,11 +275,11 @@ public class ScreenBehavior : MonoBehaviour
             botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false); 
             RectTransform transformBotMessage = (RectTransform)botMessage.transform;
-            actualScrollSize += transformBotMessage.rect.height * 2;
-            if (actualScrollSize >= 500)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
+            actualScrollSize += transformBotMessage.rect.height;
+            if (actualScrollSize >= 515)
             {
-                actualScrollSize = 0;
-                scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformBotMessage.rect.height * 2);
+                scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformBotMessage.rect.height);
             }
             historyController(conv);
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
@@ -286,10 +296,10 @@ public class ScreenBehavior : MonoBehaviour
             RectTransform transformMessage = (RectTransform)Message.transform;
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
-            actualScrollSize += transformMessage.rect.height * 2;
-            if (actualScrollSize >= 500) {
-                actualScrollSize = 0;
-                scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformMessage.rect.height * 2);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
+            actualScrollSize += transformMessage.rect.height;
+            if (actualScrollSize >= 515) {
+                scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformMessage.rect.height);
             }
             historyController(conv);
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
