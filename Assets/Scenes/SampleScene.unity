@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &128563175
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1097,6 +1097,7 @@ MonoBehaviour:
   Conversation: {fileID: 53502123914547213, guid: ce1ebede74cec1c4a997d605f5876b8b, type: 3}
   BotMessage: {fileID: 237663315502945854, guid: 01bdc2a2379f07b429ed0e7abf54e498, type: 3}
   MeMessage: {fileID: 237663315502945854, guid: 0c1b540547e1e6a49b55f063dd24a0ae, type: 3}
+  Choices: {fileID: 2643440029751124365, guid: f6c50cfad00ef424e89e6ad947dfba2d, type: 3}
   notifSound: {fileID: 8300000, guid: eb2433e854064df40b663dacbddfcb94, type: 3}
   messageSound: {fileID: 8300000, guid: f7cfe7145d4409e4a93c83457731f4d6, type: 3}
 --- !u!82 &1026787042
