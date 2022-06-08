@@ -3,7 +3,14 @@ guid: 5cb219c552b6c6f4784f7441bb6bcabb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - UserContact: {instanceID: 0}
+  - Conversation: {instanceID: 0}
+  - BotMessage: {instanceID: 0}
+  - MeMessage: {instanceID: 0}
+  - Choices: {fileID: 2643440029751124365, guid: f6c50cfad00ef424e89e6ad947dfba2d, type: 3}
+  - notifSound: {instanceID: 0}
+  - messageSound: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
