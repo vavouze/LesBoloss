@@ -283,6 +283,44 @@ public class ScreenBehavior : MonoBehaviour
                             }
                         }
                     }
+                    else if (index == "Maeva-06-01")
+                    {
+                        foreach (Transform child in convCanvas.transform)
+                        {
+                            if (child.name == "conv_Marina")
+                            {
+                                addBotMessage(child, "Il faut vraiment que je te vois ce soir, c'est important.");
+                                addBotMessage(child, "Stp c'est vraiment important. Viens me voir je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30.Tu seras-là ?");
+                                choice = (GameObject)Instantiate(Choices);
+                                Image img = choice.transform.Find("Button").GetComponent<Image>();
+                                img.color = new Color(255, 0, 0, 1);
+                                choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
+                                choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("love"); });
+                                choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
+                                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                            }
+                        }
+                    }
+                    else if (index == "Marina-05-01")
+                    {
+                        foreach (Transform child in convCanvas.transform)
+                        {
+                            if (child.name == "conv_Maeva")
+                            {
+                                addBotMessage(child, "Hello, alors ces partiels ? ;)");
+                                addMessage(child, "J'ai dead ça !");
+                                addBotMessage(child, "Bon, je sais que tu m'avais proposé une petite sortie, il se trouve que j'ai mon appartement de libre ce soir et pour le reste du week-end ;)");
+                                addBotMessage(child, "Ca te dirait de passer ?");
+                                choice = (GameObject)Instantiate(Choices);
+                                Image img = choice.transform.Find("Button").GetComponent<Image>();
+                                img.color = new Color(255, 0, 0, 1);
+                                choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
+                                choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("death"); });
+                                choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
+                                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                            }
+                        }
+                    }
                     else if(index == "Ellipse-02-02")
                     {
                         this.index = "Marina-05-01";
