@@ -36,7 +36,9 @@ public class ScreenBehavior : MonoBehaviour
     private float actualChoiceScrollSizeMaeva = 0;
     private string currentConv = "Marina";
     private bool loadending = true;
-
+    private bool wait = false;
+    private bool waitAnnonce = false;
+    
 
 
     void Start()
@@ -134,6 +136,10 @@ public class ScreenBehavior : MonoBehaviour
 
     IEnumerator annonce(string annonce,Transform conv, int time = 5)
     {
+        if (wait == false && waitAnnonce == true)
+        {
+            System.Threading.Thread.Sleep(5000);
+        }
         annonceCanvas.SetActive(true);
         var image = GameObject.Find("annonce").GetComponent<Image>();
         image.color = new Color(image.color.r, image.color.g, image.color.b, 1);    
@@ -149,8 +155,8 @@ public class ScreenBehavior : MonoBehaviour
         actualScrollSizeMaeva = 0;
         actualChoiceScrollSizeMarina = 0;
         actualChoiceScrollSizeMaeva = 0;
-        StartCoroutine(FadeTo(0.0f, 1.0f));
         historyController(conv);
+        StartCoroutine(FadeTo(0.0f, 1.0f));
         LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
     }
@@ -262,7 +268,6 @@ public class ScreenBehavior : MonoBehaviour
                 {
                     if (child.name == "conv_Maeva")
                     {
-                        Debug.Log("Marina End");
                         addBotMessage(child, "Hello, alors ces partiels ? ;)");
                         addMessage(child, "J'ai dead ça !");
                         addBotMessage(child, "Bon, je sais que tu m'avais proposé une petite sortie,\n il se trouve que j'ai mon appartement de libre ce soir et pour le reste du week-end ;)");
@@ -352,6 +357,11 @@ public class ScreenBehavior : MonoBehaviour
                 {
                     if (conv.name == "conv_" + this.currentConv)
                     {
+                        if (wait)
+                        {
+                            wait = false;
+                            System.Threading.Thread.Sleep(5000);
+                        }
                         choice = (GameObject)Instantiate(Choices);
                         if (item.Value[1] == "Finale-Marina" || item.Value[1] == "Finale-Maeva")
                         {
@@ -432,10 +442,21 @@ public class ScreenBehavior : MonoBehaviour
     
     IEnumerator waitBotMessage(Transform conv, string message) 
     {
-        yield return new WaitForSeconds(1);
+        if (this.index == "Maeva-03-01")
+        {
+            wait = true;
+        }
+        else if (this.index == "Marina-04-02" || this.index == "Marina-04-01")
+        {
+            waitAnnonce = true;
+        }
+        else
+        {
+            yield return new WaitForSeconds(1);
+        }
         addBotMessage(conv, message);
     }
-    
+
     IEnumerator waitMessage(Transform conv, string message) 
     {
         yield return new WaitForSeconds(1);
@@ -456,21 +477,21 @@ public class ScreenBehavior : MonoBehaviour
             {
                 for (int i = 0; i < item.Value.Length; i++)
                 {
-                if (i % 2 == 0)
-                {
-                    if (item.Value[i] != "")
+                    if (i % 2 == 0)
                     {
-                        StartCoroutine(waitBotMessage(conv, item.Value[i]));
+                        if (item.Value[i] != "")
+                        {
+                            StartCoroutine(waitBotMessage(conv, item.Value[i]));
+                        }
+                    }
+                    else
+                    {
+                        if (item.Value[i] != "")
+                        {
+                            StartCoroutine(waitMessage(conv, item.Value[i]));
+                        }
                     }
                 }
-                else
-                {
-                    if (item.Value[i] != "")
-                    {
-                        StartCoroutine(waitMessage(conv, item.Value[i]));
-                    }
-                }
-               }
                 
             }
 
@@ -482,7 +503,7 @@ public class ScreenBehavior : MonoBehaviour
     {
         if (conv != null)
         {
-                RectTransform scroll = (RectTransform)conv.Find("Scroll").Find("panel");
+            RectTransform scroll = (RectTransform)conv.Find("Scroll").Find("panel");
             GameObject botMessage = (GameObject)Instantiate(BotMessage);
             botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false); 
