@@ -66,6 +66,31 @@ public class ScreenBehavior : MonoBehaviour
         arbre2Decision.Add("Oui, je sors d'une relation compliquée ", new string[] { "Maeva-02-02", "Maeva-03-01" });
 
         arbre2Decision.Add("Skip-01", new string[] { "Maeva-03-01", "Ellipse-01" });
+        arbre2Decision.Add("Skip-02", new string[] { "Ellipse-01", "Maeva-04-01" });
+
+        arbre2Decision.Add("Un ciné ça te va ?", new string[] { "Maeva-04-01", "Maeva-05-01" });
+        arbre2Decision.Add("Un bar ça te va ?", new string[] { "Maeva-04-01", "Maeva-05-01" });
+        arbre2Decision.Add("Un Jardiland ça te va ?", new string[] { "Maeva-04-01", "Maeva-05-02" });
+
+        arbre2Decision.Add("N/A-Marina-05-01", new string[] { "Maeva-05-01", "Marina-04-00" });
+        arbre2Decision.Add("N/A-Marina-05-02", new string[] { "Maeva-05-02", "Marina-04-00" });
+
+        arbre2Decision.Add("Oui  ", new string[] { "Marina-04-00", "Marina-04-01" });
+        arbre2Decision.Add("Non", new string[] { "Marina-04-00", "Marina-04-02" });
+
+        arbre2Decision.Add("Je vais supprimer les autres, il n'y a qu'avec toi que c'est sérieux ?", new string[] { "Marina-04-01", "Ellipse-02-02" });
+        arbre2Decision.Add("C'est à toi que je préfère parler ne t'inquiète pas", new string[] { "Marina-04-01", "Ellipse-02-01" });
+        arbre2Decision.Add("Bin non :(", new string[] { "Marina-04-01", "Ellipse-02-02" });
+
+        arbre2Decision.Add("Skip-03", new string[] { "Marina-04-02", "Ellipse-02-01" });
+
+        arbre2Decision.Add("Ok mais j'ai un rdv ce soir il faudra que je parte tôt", new string[] { "Marina-05-01", "Marina-06-01" });
+        arbre2Decision.Add("C'est compliqué j'ai déjà un rdv ce soir", new string[] { "Marina-05-01", "Marina-06-02" });
+        arbre2Decision.Add("Oui    ", new string[] { "Marina-06-01", "Finale-Marina" });
+        arbre2Decision.Add("Oui     ", new string[] { "Marina-06-02", "Finale-Marina" });
+
+        arbre2Decision.Add("Oui      ", new string[] { "Maeva-06-01", "Finale-Maeva" });
+
 
         phraseBot.Add("Start", new string[] { "Salut ça va ?\nTu fais quoi dans la vie ?" });
         phraseBot.Add("Marina-01-01", new string[] { "Ouais ouais ^^\nCa peut aller, et toi ça va ?" });
@@ -82,6 +107,16 @@ public class ScreenBehavior : MonoBehaviour
         phraseBot.Add("Maeva-02-01", new string[] { "Mais si !\nAlors comme ça tu fais du design ?", "Bah comment tu sais ?", "J'ai réconnu ton école sur une de tes photos.", "Ah oui toi aussi tu étudis là-bas ?", "J'y ai été quelques temps mais je suis à l'université maintenant.","Sinon je suppose que tu es célibataire si tu es sur cette appli."});
         phraseBot.Add("Maeva-02-02", new string[] { "Haha connard :)\nBin oui c'est la première fois que j'installe cette appli, j'en avais pas vraiment besoin avant xD", "C'est vrai que tu ne laisses pas indifférent.", "Merci <3\nAlors comme ça tu fais du design ?", "Bah comment tu sais ?", "J'ai réconnu ton école sur une de tes photos.", "Ah oui toi aussi tu étudies là-bas ?", "J'y ai été quelques temps mais je suis à l'université maintenant.\nSinon je suppose que tu es célibataire si tu es sur cette appli." });
         phraseBot.Add("Maeva-03-01", new string[] { "Haha moi aussi ;)" });
+        phraseBot.Add("Maeva-04-01", new string[] { "Salut beau gosse, j'pensais pas mal à toi dernièrement ^^\nT'es occupé en ce moment ?", "Ouais en ce moment je suis pas mal pris par mes partiels, en plus j'ai des rattrapages de maths...", "Ah pas de soucis je te proposerais bien de sortir un peu mais je ne voudrais pas te déranger", "C'est vrai que là ça ne m'arrange pas trop, on fait ça dans une semaine ?" });
+        phraseBot.Add("Maeva-05-01", new string[] { "Haha super idée\n Va pour dans une semaine" });
+        phraseBot.Add("Maeva-05-02", new string[] { "Haha super idée ^^\n Va pour dans une semaine" });
+        phraseBot.Add("Marina-04-00", new string[] { "Dit, tu parles à d'autres filles sur l'appli ?" });
+        phraseBot.Add("Marina-04-01", new string[] { "Ah... je pensais que j'étais la seule à avoir cette chance :(" });
+        phraseBot.Add("Marina-04-02", new string[] { "Ah c'est bien ;)\nPas que je sois jalouse mais on dit qu'il y plein de gens bizarre et de fake sur Whats'Up" });
+        phraseBot.Add("Marina-05-01", new string[] { "Il faut vraiment que je te vois ce soir, c'est important." });
+        phraseBot.Add("Marina-06-01", new string[] { "D'accord. Le square Charles Verdrel, à 18h30. Tu seras-là ?" });
+        phraseBot.Add("Marina-06-02", new string[] { "Stp c'est vraiment important. Viens me voir avant je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30. Tu seras-là ?" });
+        phraseBot.Add("Maeva-06-01", new string[] { "Hello, alors ces partiels ? ;)", "J'ai dead ça", "Bon,\n je sais que tu m'avais proposé une petite sortie,\n il se trouve que j'ai mon appartement de libre ce soir et pour le reste du week-end ;)\nCa te dirait de passer ?\n;)"});
     }
 
     IEnumerator WaitAnimation()
@@ -95,7 +130,7 @@ public class ScreenBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator annonce(string annonce,int time = 5)
+    IEnumerator annonce(string annonce,Transform conv, int time = 5)
     {
         annonceCanvas.SetActive(true);
         var image = GameObject.Find("annonce").GetComponent<Image>();
@@ -110,6 +145,7 @@ public class ScreenBehavior : MonoBehaviour
 
         clearAllConvMsg();
         StartCoroutine(FadeTo(0.0f, 1.0f));
+        historyController(conv);
     }
     
     IEnumerator FadeTo(float aValue, float aTime) 
@@ -214,17 +250,45 @@ public class ScreenBehavior : MonoBehaviour
                 }
                 else if (index.Contains("Ellipse"))
                 {
-
-                    StartCoroutine(annonce("J'ai discuté pendant une semaine à Maeva et Marina.\n " +
-                                           "C'est amusant de voir qu'elles n'ont pas du tout le même caractère.\n " +
-                                           "Maeva est vraiment directe. Quant à Marina je la trouve vraiment drôle,\n" +
-                                           " dommage, on dirait qu'elle n'a pas confiance en elle.\n" +
-                                           "Elle semble beaucoup s'attacher à moi...",8));
-                    this.index = item.Value[1];
-                    historyController(conv);
+                    Debug.Log(this.index);
+                    if (index == "Ellipse-01")
+                    {
+                        this.index = "Maeva-04-01";
+                        StartCoroutine(annonce("J'ai discuté pendant une semaine à Maeva et Marina.\n " +
+                                               "C'est amusant de voir qu'elles n'ont pas du tout le même caractère.\n " +
+                                               "Maeva est vraiment directe. Quant à Marina je la trouve vraiment drôle,\n" +
+                                               " dommage, on dirait qu'elle n'a pas confiance en elle.\n" +
+                                               "Elle semble beaucoup s'attacher à moi...", conv, 8));
+                    }
+                    else if (index == "Ellipse-02-01")
+                    {
+                        this.index = "Maeva-06-01";
+                        this.currentConv = "Maeva";
+                        foreach (Transform child in convCanvas.transform)
+                        {
+                            if (child.name == "conv_" + this.currentConv)
+                            {
+                                StartCoroutine(annonce("Une semaine encore s'écoule, Maeva commence à évoquer le fait de se rencontrer.\n Marina agit de manière de plus en plus possessive sans que je ne puisse vraiment l'expliquer.", child, 8));
+                            }
+                        }
+                    }
+                    else if(index == "Ellipse-02-02")
+                    {
+                        this.index = "Marina-05-01";
+                        StartCoroutine(annonce("Une semaine encore s'écoule, malgré ma promesse, je n'ai pas arrêté de parler à Maeva qui commence à évoquer le fait de se rencontrer.\n Marina agit de manière de plus en plus possessive sans que je ne puisse vraiment l'expliquer.", conv, 8));
+                    }
+                }
+                if (this.index == "Finale-Maeva")
+                {
+                    loadEndingScene("death");
+                }
+                if (this.index == "Finale-Marina")
+                {
+                    loadEndingScene("love");
                 }
                 else if (item.Value[0] == index)
                 {
+                    Debug.Log(this.index);
                     if (conv.name == "conv_" + this.currentConv)
                     {
                         choice = (GameObject)Instantiate(Choices);
