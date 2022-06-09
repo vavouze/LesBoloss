@@ -302,6 +302,11 @@ public class ScreenBehavior : MonoBehaviour
                     if (conv.name == "conv_" + this.currentConv)
                     {
                         choice = (GameObject)Instantiate(Choices);
+                        if (item.Value[1] == "Finale-Marina" || item.Value[1] == "Finale-Maeva")
+                        {
+                            Image img = choice.transform.Find("Button").GetComponent<Image>();
+                            img.color = new Color(255,0, 0, 1);  
+                        }
                         choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = item.Key;
                         choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { changeIndexAndSendMessage(conv,item.Key,item.Value[1]) ; });
                         choice.transform.SetParent(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
