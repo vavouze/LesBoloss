@@ -35,6 +35,7 @@ public class ScreenBehavior : MonoBehaviour
     private float actualChoiceScrollSizeMarina = 0;
     private float actualChoiceScrollSizeMaeva = 0;
     private string currentConv = "Marina";
+    private bool loadending = true;
 
 
 
@@ -233,6 +234,54 @@ public class ScreenBehavior : MonoBehaviour
             actualChoiceScrollSizeMaeva = 0;
             panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, 300);
             clearAllResponses(panelButtons);
+            if (index == "Maeva-06-01")
+            {
+                foreach (Transform child in convCanvas.transform)
+                {
+                    if (child.name == "conv_Marina")
+                    {
+                        addBotMessage(child, "Il faut vraiment que je te vois ce soir, c'est important.");
+                        addBotMessage(child, "Stp c'est vraiment important. Viens me voir je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30.Tu seras-là ?");
+                        if (loadending)
+                        {
+                            loadending = false;
+                            choice = (GameObject)Instantiate(Choices);
+                            Image img = choice.transform.Find("Button").GetComponent<Image>();
+                            img.color = new Color(255, 0, 0, 1);
+                            choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
+                            choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("death"); });
+                            choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
+                            LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                        }
+                    }
+                }
+            }
+            if (index == "Marina-05-01")
+            {
+                foreach (Transform child in convCanvas.transform)
+                {
+                    if (child.name == "conv_Maeva")
+                    {
+                        Debug.Log("Marina End");
+                        addBotMessage(child, "Hello, alors ces partiels ? ;)");
+                        addMessage(child, "J'ai dead ça !");
+                        addBotMessage(child, "Bon, je sais que tu m'avais proposé une petite sortie,\n il se trouve que j'ai mon appartement de libre ce soir et pour le reste du week-end ;)");
+                        addBotMessage(child, "Ca te dirait de passer ?");
+                        if (loadending)
+                        {
+                            loadending = false;
+                            choice = (GameObject)Instantiate(Choices);
+                            Image img = choice.transform.Find("Button").GetComponent<Image>();
+                            img.color = new Color(255, 0, 0, 1);
+                            choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
+                            choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("death"); });
+                            choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
+                            LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                        }
+                        
+                    }
+                }
+            }
             foreach (var item in arbre2Decision)
             {
                 //Switch Conversation 
@@ -283,50 +332,14 @@ public class ScreenBehavior : MonoBehaviour
                             }
                         }
                     }
-                    else if (index == "Maeva-06-01")
-                    {
-                        foreach (Transform child in convCanvas.transform)
-                        {
-                            if (child.name == "conv_Marina")
-                            {
-                                addBotMessage(child, "Il faut vraiment que je te vois ce soir, c'est important.");
-                                addBotMessage(child, "Stp c'est vraiment important. Viens me voir je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30.Tu seras-là ?");
-                                choice = (GameObject)Instantiate(Choices);
-                                Image img = choice.transform.Find("Button").GetComponent<Image>();
-                                img.color = new Color(255, 0, 0, 1);
-                                choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
-                                choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("love"); });
-                                choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
-                                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
-                            }
-                        }
-                    }
-                    else if (index == "Marina-05-01")
-                    {
-                        foreach (Transform child in convCanvas.transform)
-                        {
-                            if (child.name == "conv_Maeva")
-                            {
-                                addBotMessage(child, "Hello, alors ces partiels ? ;)");
-                                addMessage(child, "J'ai dead ça !");
-                                addBotMessage(child, "Bon, je sais que tu m'avais proposé une petite sortie, il se trouve que j'ai mon appartement de libre ce soir et pour le reste du week-end ;)");
-                                addBotMessage(child, "Ca te dirait de passer ?");
-                                choice = (GameObject)Instantiate(Choices);
-                                Image img = choice.transform.Find("Button").GetComponent<Image>();
-                                img.color = new Color(255, 0, 0, 1);
-                                choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
-                                choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("death"); });
-                                choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
-                                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
-                            }
-                        }
-                    }
+                    
                     else if(index == "Ellipse-02-02")
                     {
                         this.index = "Marina-05-01";
-                        StartCoroutine(annonce("Une semaine encore s'écoule, malgré ma promesse, je n'ai pas arrêté de parler à Maeva qui commence à évoquer le fait de se rencontrer.\n Marina agit de manière de plus en plus possessive sans que je ne puisse vraiment l'expliquer.", conv, 8));
+                        StartCoroutine(annonce("Une semaine encore s'écoule, malgré ma promesse,\n je n'ai pas arrêté de parler à Maeva qui commence à évoquer le fait de se rencontrer.\n Marina agit de manière de plus en plus possessive sans que je ne puisse vraiment l'expliquer.", conv, 8));
                     }
                 }
+                
                 if (this.index == "Finale-Maeva")
                 {
                     loadEndingScene("death");
@@ -335,7 +348,7 @@ public class ScreenBehavior : MonoBehaviour
                 {
                     loadEndingScene("love");
                 }
-                else if (item.Value[0] == index)
+                if (item.Value[0] == index)
                 {
                     if (conv.name == "conv_" + this.currentConv)
                     {
@@ -370,7 +383,6 @@ public class ScreenBehavior : MonoBehaviour
             }
             conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 1);
         }
-
     }
     public void changeIndexAndSendMessage(Transform conv,string message, string newIndex)
     {
@@ -470,7 +482,7 @@ public class ScreenBehavior : MonoBehaviour
     {
         if (conv != null)
         {
-            RectTransform scroll = (RectTransform)conv.Find("Scroll").Find("panel");
+                RectTransform scroll = (RectTransform)conv.Find("Scroll").Find("panel");
             GameObject botMessage = (GameObject)Instantiate(BotMessage);
             botMessage.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false); 
