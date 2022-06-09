@@ -247,7 +247,7 @@ public class ScreenBehavior : MonoBehaviour
                     if (child.name == "conv_Marina")
                     {
                         addBotMessage(child, "Il faut vraiment que je te vois ce soir, c'est important.");
-                        addBotMessage(child, "Stp c'est vraiment important. Viens me voir je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30.Tu seras-là ?");
+                        addBotMessage(child, "Stp c'est vraiment important. Viens me voir je n'en ai pas pour longtemps.\nJe serais au square Charles Verdrel, à 18h30.Tu seras-là ?"); 
                         if (loadending)
                         {
                             loadending = false;
@@ -255,7 +255,7 @@ public class ScreenBehavior : MonoBehaviour
                             Image img = choice.transform.Find("Button").GetComponent<Image>();
                             img.color = new Color(255, 0, 0, 1);
                             choice.transform.Find("Button").Find("ChoiceText").GetComponent<UnityEngine.UI.Text>().text = "Oui";
-                            choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("death"); });
+                            choice.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { loadEndingScene("love"); });
                             choice.transform.SetParent(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
                             LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                         }
