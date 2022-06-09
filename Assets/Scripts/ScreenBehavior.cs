@@ -52,7 +52,7 @@ public class ScreenBehavior : MonoBehaviour
         arbre2Decision.Add("Ah ouais ? Tu faisais quoi ? ", new string[] { "Marina-02-01", "Marina-02-03" });
         arbre2Decision.Add("N/A-Marina-02-02", new string[] { "Marina-02-02", "Maeva-01-01" });
         arbre2Decision.Add("Tu avais pas dit que tu avais arrêté ?", new string[] { "Marina-02-03", "Marina-03-01" });
-        arbre2Decision.Add("Ah ouais à ce point là, ça t'as beaucoup marqué. J'espère que tu trouveras quelque-chose qui te plaîra plus...", new string[] { "Marina-02-04", "Marina-03-02" });
+        arbre2Decision.Add("Ah ouais à ce point là, ça t'as beaucoup marqué.\n J'espère que tu trouveras quelque-chose qui te plaîra plus...", new string[] { "Marina-02-04", "Marina-03-02" });
         arbre2Decision.Add("Mais attends... du coup tu était dans l'université de ta mère ?", new string[] { "Marina-02-04", "Marina-03-03" });
         arbre2Decision.Add("N/A-Marina-03-01", new string[] { "Marina-03-01", "Maeva-01-01" });
         arbre2Decision.Add("N/A-Marina-03-02", new string[] { "Marina-03-02", "Maeva-01-01" });
@@ -68,7 +68,6 @@ public class ScreenBehavior : MonoBehaviour
         arbre2Decision.Add("Oui, je sors d'une relation compliquée ", new string[] { "Maeva-02-02", "Maeva-03-01" });
 
         arbre2Decision.Add("Skip-01", new string[] { "Maeva-03-01", "Ellipse-01" });
-        arbre2Decision.Add("Skip-02", new string[] { "Ellipse-01", "Maeva-04-01" });
 
         arbre2Decision.Add("Un ciné ça te va ?", new string[] { "Maeva-04-01", "Maeva-05-01" });
         arbre2Decision.Add("Un bar ça te va ?", new string[] { "Maeva-04-01", "Maeva-05-01" });
@@ -101,12 +100,12 @@ public class ScreenBehavior : MonoBehaviour
         phraseBot.Add("Marina-02-01", new string[] { "Et arrête si ça se trouve c'est très bien Dreux.\nAprès c'est vrai que j'ai arrêté les cours depuis 1 an." });
         phraseBot.Add("Marina-02-02", new string[] { "Donc tu es forcement quelqu'un de bien !\n", "Et tu fais quoi dans la vie ?\n", "Je faisais de la psycho jusqu'y il a un an avec ma mère" });
         phraseBot.Add("Marina-02-03", new string[] { "Des cours de psychologies à domicile, pour mieux m'intégrer avec les gens et mieux les comprendre haha :)\nJe faisais ça avec ma mère, elle est prof à l'université.\nJ'en ai un peu marre.\nMais je n'ai pas encore trouvé ce que je voulais faire de ma vie.\nEnfin bref on est pas là pour parler pour moi." });
-        phraseBot.Add("Marina-02-04", new string[] { "Actuellement oui, après avec ma mère on a beaucoup déménagés.\nOn habite du côté de la place de la Rougemare.\n", "Ouais elle fait un taff qui l'oblige à se déplacer ?", "Elle fait de la recherche sur le cerveau des gens !", "Quoi ?", "Non je rigole, elle étudie les interactions sociales des personnes et les personnes atteintes de troubles/désordres mentaux.", "Ca a l'air super interessant pourquoi tu as décidé d'arrêter ?", "Finalement ça c'était éloigné de mes intérêts et ça continue à me déplaire. " });
+        phraseBot.Add("Marina-02-04", new string[] { "Actuellement oui, après avec ma mère on a beaucoup déménagés.\nOn habite du côté de la place de la Rougemare.\n", "Ouais elle fait un taff qui l'oblige à se déplacer ?", "Elle fait de la recherche sur le cerveau des gens !", "Quoi ?", "Non je rigole, elle étudie les interactions sociales des personnes et les personnes atteintes\n de troubles/désordres mentaux.", "Ca a l'air super interessant pourquoi tu as décidé d'arrêter ?", "Finalement ça c'était éloigné de mes intérêts et ça continue à me déplaire. " });
         phraseBot.Add("Marina-03-01", new string[] { "C'est compliqué mais oui on a arrêtés les cours..." });
         phraseBot.Add("Marina-03-02", new string[] { "" });
         phraseBot.Add("Marina-03-03", new string[] { "Non non depuis le lycée elle est ma prof à domicile" });
         phraseBot.Add("Maeva-01-01", new string[] { "Salut, tu es mon premier match de toute ma vie :p" });
-        phraseBot.Add("Maeva-02-01", new string[] { "Mais si !\nAlors comme ça tu fais du design ?", "Bah comment tu sais ?", "J'ai réconnu ton école sur une de tes photos.", "Ah oui toi aussi tu étudis là-bas ?", "J'y ai été quelques temps mais je suis à l'université maintenant.","Sinon je suppose que tu es célibataire si tu es sur cette appli."});
+        phraseBot.Add("Maeva-02-01", new string[] { "Mais si !\nAlors comme ça tu fais du design ?", "Bah comment tu sais ?", "J'ai réconnu ton école sur une de tes photos.", "Ah oui toi aussi tu étudis là-bas ?", "J'y ai été quelques temps mais je suis à l'université maintenant.\n Sinon je suppose que tu es célibataire si tu es sur cette appli."});
         phraseBot.Add("Maeva-02-02", new string[] { "Haha connard :)\nBin oui c'est la première fois que j'installe cette appli, j'en avais pas vraiment besoin avant xD", "C'est vrai que tu ne laisses pas indifférent.", "Merci <3\nAlors comme ça tu fais du design ?", "Bah comment tu sais ?", "J'ai réconnu ton école sur une de tes photos.", "Ah oui toi aussi tu étudies là-bas ?", "J'y ai été quelques temps mais je suis à l'université maintenant.\nSinon je suppose que tu es célibataire si tu es sur cette appli." });
         phraseBot.Add("Maeva-03-01", new string[] { "Haha moi aussi ;)" });
         phraseBot.Add("Maeva-04-01", new string[] { "Salut beau gosse, j'pensais pas mal à toi dernièrement ^^\nT'es occupé en ce moment ?", "Ouais en ce moment je suis pas mal pris par mes partiels, en plus j'ai des rattrapages de maths...", "Ah pas de soucis je te proposerais bien de sortir un peu mais je ne voudrais pas te déranger", "C'est vrai que là ça ne m'arrange pas trop, on fait ça dans une semaine ?" });
@@ -144,13 +143,15 @@ public class ScreenBehavior : MonoBehaviour
             timePassed += Time.deltaTime;
             yield return null;
         }
+        clearAllConvMsg();
         actualScrollSizeMarina = 0;
         actualScrollSizeMaeva = 0;
         actualChoiceScrollSizeMarina = 0;
         actualChoiceScrollSizeMaeva = 0;
-        clearAllConvMsg();
         StartCoroutine(FadeTo(0.0f, 1.0f));
         historyController(conv);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
     }
     
     IEnumerator FadeTo(float aValue, float aTime) 
@@ -205,6 +206,8 @@ public class ScreenBehavior : MonoBehaviour
     {
         foreach (Transform child in GameObject.Find("conv").transform)
         {
+            RectTransform rect = (RectTransform) child.Find("Scroll").Find("panel");
+            rect.sizeDelta = new Vector2(rect.rect.width, 815);
             foreach(Transform msg in child.Find("Scroll").Find("panel").transform)
             {
                 Destroy(msg.gameObject);
@@ -226,6 +229,9 @@ public class ScreenBehavior : MonoBehaviour
         if (conv != null)
         {
             RectTransform panelButtons = (RectTransform)conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons");
+            actualChoiceScrollSizeMarina = 0;
+            actualChoiceScrollSizeMaeva = 0;
+            panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, 300);
             clearAllResponses(panelButtons);
             foreach (var item in arbre2Decision)
             {
@@ -252,13 +258,10 @@ public class ScreenBehavior : MonoBehaviour
                 else if (item.Key.Contains("Skip") && item.Value[0] == index)
                 {
                     this.index = item.Value[1];
-                    Debug.Log(this.index);
-                    
                     historyController(conv);
                 }
                 else if (index.Contains("Ellipse"))
                 {
-                    Debug.Log(this.index);
                     if (index == "Ellipse-01")
                     {
                         this.index = "Maeva-04-01";
@@ -296,7 +299,6 @@ public class ScreenBehavior : MonoBehaviour
                 }
                 else if (item.Value[0] == index)
                 {
-                    Debug.Log(this.index);
                     if (conv.name == "conv_" + this.currentConv)
                     {
                         choice = (GameObject)Instantiate(Choices);
@@ -309,13 +311,13 @@ public class ScreenBehavior : MonoBehaviour
                         if (conv.name == "conv_Marina")
                         {
                             actualChoiceScrollSizeMarina += transformButtons.rect.height;
-                            actualChoiceScrollSize = actualScrollSizeMarina;
+                            actualChoiceScrollSize = actualChoiceScrollSizeMarina;
                         }else
                         {
                             actualChoiceScrollSizeMaeva += transformButtons.rect.height;
-                            actualChoiceScrollSize = actualScrollSizeMaeva;
+                            actualChoiceScrollSize = actualChoiceScrollSizeMaeva;
                         }
-                        if (actualChoiceScrollSize >= 300 / 2)
+                        if (actualChoiceScrollSize >= 280 / 2)
                         {
                             panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, panelButtons.rect.height + transformButtons.rect.height);
                         }
@@ -345,6 +347,7 @@ public class ScreenBehavior : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
                 LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
+                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").GetComponent<RectTransform>());
                 activeConv = child;
                 if (index == "Start" && init == false && id==currentConv) {
                     historyController(child);
@@ -440,7 +443,7 @@ public class ScreenBehavior : MonoBehaviour
                 actualScrollSizeMaeva += transformBotMessage.rect.height;
                 actualScrollSize = actualScrollSizeMaeva;
             }
-            if (actualScrollSize >= 515)
+            if (actualScrollSize >= 480)
             {
                 scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformBotMessage.rect.height);
             }
@@ -475,7 +478,7 @@ public class ScreenBehavior : MonoBehaviour
                 actualScrollSize = actualScrollSizeMaeva;
 
             }
-            if (actualScrollSize >= 515) {
+            if (actualScrollSize >= 480) {
                 scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformMessage.rect.height);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
