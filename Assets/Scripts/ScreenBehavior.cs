@@ -95,14 +95,14 @@ public class ScreenBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator annonce(string annonce)
+    IEnumerator annonce(string annonce,int time = 5)
     {
         annonceCanvas.SetActive(true);
         var image = GameObject.Find("annonce").GetComponent<Image>();
         image.color = new Color(image.color.r, image.color.g, image.color.b, 1);    
         GameObject.Find("annoncetext").GetComponent<UnityEngine.UI.Text>().text = annonce;
         float timePassed = 0;
-        while (timePassed < 5)
+        while (timePassed < time)
         {
             timePassed += Time.deltaTime;
             yield return null;
@@ -209,12 +209,17 @@ public class ScreenBehavior : MonoBehaviour
                 {
                     this.index = item.Value[1];
                     Debug.Log(this.index);
+                    
                     historyController(conv);
                 }
-                else if (item.Value[0].Contains("Ellipse") && item.Value[0] == index)
+                else if (index.Contains("Ellipse"))
                 {
-                    Debug.Log("pute");
-                    StartCoroutine("Oui");
+
+                    StartCoroutine(annonce("J'ai discuté pendant une semaine à Maeva et Marina.\n " +
+                                           "C'est amusant de voir qu'elles n'ont pas du tout le même caractère.\n " +
+                                           "Maeva est vraiment directe. Quant à Marina je la trouve vraiment drôle,\n" +
+                                           " dommage, on dirait qu'elle n'a pas confiance en elle.\n" +
+                                           "Elle semble beaucoup s'attacher à moi...",8));
                     this.index = item.Value[1];
                     historyController(conv);
                 }
@@ -257,6 +262,7 @@ public class ScreenBehavior : MonoBehaviour
             if (child.name == "conv_" + id) 
             {
                 child.gameObject.SetActive(true);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(child.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                 activeConv = child;
                 if (index == "Start" && init == false && id==currentConv) {
                     historyController(child);
