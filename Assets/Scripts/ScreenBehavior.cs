@@ -30,8 +30,10 @@ public class ScreenBehavior : MonoBehaviour
     public AudioClip messageSound;
     private GameObject[] messages;
     private string[] users = new string[] {"Marina" , "Maeva"};
-    private float actualScrollSize = 0;
-    private float actualChoiceScrollSize = 0;
+    private float actualScrollSizeMarina = 0;
+    private float actualScrollSizeMaeva = 0;
+    private float actualChoiceScrollSizeMarina = 0;
+    private float actualChoiceScrollSizeMaeva = 0;
     private string currentConv = "Marina";
 
 
@@ -107,7 +109,10 @@ public class ScreenBehavior : MonoBehaviour
             timePassed += Time.deltaTime;
             yield return null;
         }
-
+        actualScrollSizeMarina = 0;
+        actualScrollSizeMaeva = 0;
+        actualChoiceScrollSizeMarina = 0;
+        actualChoiceScrollSizeMaeva = 0;
         clearAllConvMsg();
         StartCoroutine(FadeTo(0.0f, 1.0f));
     }
@@ -169,8 +174,14 @@ public class ScreenBehavior : MonoBehaviour
                 Destroy(msg.gameObject);
             } 
         }
+    }
 
-        
+    public void clearAllResponses(RectTransform panelButtons)
+    {
+        foreach (Transform child in panelButtons)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void creationAnswerIntoConv(Transform conv)
@@ -179,10 +190,7 @@ public class ScreenBehavior : MonoBehaviour
         if (conv != null)
         {
             RectTransform panelButtons = (RectTransform)conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons");
-            foreach (Transform child in panelButtons)
-            {
-                Destroy(child.gameObject);
-            }
+            clearAllResponses(panelButtons);
             foreach (var item in arbre2Decision)
             {
                 //Switch Conversation 
@@ -233,7 +241,16 @@ public class ScreenBehavior : MonoBehaviour
                         choice.transform.SetParent(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons"), false);
                         LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons").GetComponent<RectTransform>());
                         RectTransform transformButtons = (RectTransform)choice.transform;
-                        actualChoiceScrollSize += transformButtons.rect.height;
+                        float actualChoiceScrollSize;
+                        if (conv.name == "conv_Marina")
+                        {
+                            actualChoiceScrollSizeMarina += transformButtons.rect.height;
+                            actualChoiceScrollSize = actualScrollSizeMarina;
+                        }else
+                        {
+                            actualChoiceScrollSizeMaeva += transformButtons.rect.height;
+                            actualChoiceScrollSize = actualScrollSizeMaeva;
+                        }
                         if (actualChoiceScrollSize >= 300 / 2)
                         {
                             panelButtons.sizeDelta = new Vector2(panelButtons.rect.width, panelButtons.rect.height + transformButtons.rect.height);
@@ -248,10 +265,11 @@ public class ScreenBehavior : MonoBehaviour
     }
     public void changeIndexAndSendMessage(Transform conv,string message, string newIndex)
     {
-     
         this.index = newIndex;
         addMessage(conv, message);
         historyController(conv);
+        RectTransform panelButtons = (RectTransform)conv.Find("Scroll").Find("Response").Find("ListChoices").Find("ScrollButton").Find("panelButtons");
+        clearAllResponses(panelButtons);
     }
     public void openConv(string id,GameObject user)
     {
@@ -289,35 +307,53 @@ public class ScreenBehavior : MonoBehaviour
     {
         return Guid.NewGuid().ToString("N");
     }
+    
+    IEnumerator waitBotMessage(Transform conv, string message) 
+    {
+        yield return new WaitForSeconds(1);
+        addBotMessage(conv, message);
+    }
+    
+    IEnumerator waitMessage(Transform conv, string message) 
+    {
+        yield return new WaitForSeconds(1);
+        addMessage(conv, message);
+    }
+    
+    IEnumerator waitResponse(Transform conv) 
+    {
+        yield return new WaitForSeconds(1);
+        creationAnswerIntoConv(conv);
+    }
     public void historyController(Transform conv)
     {
             
-            foreach (var item in phraseBot)
+        foreach (var item in phraseBot)
+        {
+            if (item.Key == index)
             {
-                if (item.Key == index)
+                for (int i = 0; i < item.Value.Length; i++)
                 {
-                    for (int i = 0; i < item.Value.Length; i++)
+                if (i % 2 == 0)
+                {
+                    if (item.Value[i] != "")
                     {
-                    if (i % 2 == 0)
-                    {
-                        if (item.Value[i] != "")
-                        {
-                            addBotMessage(conv, item.Value[i]);
-                        }
+                        StartCoroutine(waitBotMessage(conv, item.Value[i]));
                     }
-                    else
-                    {
-                        if (item.Value[i] != "")
-                        {
-                            addMessage(conv, item.Value[i]);
-                        }
-                    }
-                   }
-                    
                 }
-
+                else
+                {
+                    if (item.Value[i] != "")
+                    {
+                        StartCoroutine(waitMessage(conv, item.Value[i]));
+                    }
+                }
+               }
+                
             }
-        creationAnswerIntoConv(conv);
+
+        }
+        StartCoroutine(waitResponse(conv));
     }
 
     public void addBotMessage(Transform conv,string message)
@@ -330,7 +366,16 @@ public class ScreenBehavior : MonoBehaviour
             botMessage.transform.SetParent(conv.Find("Scroll").Find("panel"),false); 
             RectTransform transformBotMessage = (RectTransform)botMessage.transform;
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
-            actualScrollSize += transformBotMessage.rect.height;
+            float actualScrollSize;
+            if (conv.name == "conv_Marina")
+            {
+                actualScrollSizeMarina += transformBotMessage.rect.height;
+                actualScrollSize = actualScrollSizeMarina;
+            }else
+            {
+                actualScrollSizeMaeva += transformBotMessage.rect.height;
+                actualScrollSize = actualScrollSizeMaeva;
+            }
             if (actualScrollSize >= 515)
             {
                 scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformBotMessage.rect.height);
@@ -340,6 +385,7 @@ public class ScreenBehavior : MonoBehaviour
                 triggerNotifs(GameObject.Find(conv.name.Replace("conv", "user")));
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
+            conv.Find("Scroll").GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);
         }
     }
 
@@ -354,11 +400,22 @@ public class ScreenBehavior : MonoBehaviour
             Message.transform.Find("BG").Find("Message").GetComponent<UnityEngine.UI.Text>().text = message;
             Message.transform.SetParent(conv.Find("Scroll").Find("panel"),false);
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
-            actualScrollSize += transformMessage.rect.height;
+            float actualScrollSize;
+            if (conv.name == "conv_Marina")
+            {
+                actualScrollSizeMarina += transformMessage.rect.height;
+                actualScrollSize = actualScrollSizeMarina;
+            }else
+            {
+                actualScrollSizeMaeva += transformMessage.rect.height;
+                actualScrollSize = actualScrollSizeMaeva;
+
+            }
             if (actualScrollSize >= 515) {
                 scroll.sizeDelta = new Vector2(scroll.rect.width, scroll.rect.height + transformMessage.rect.height);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(conv.Find("Scroll").GetComponent<RectTransform>());
+            conv.Find("Scroll").GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);
         }
     }
     
